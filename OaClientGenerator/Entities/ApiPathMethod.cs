@@ -141,9 +141,9 @@ public class ApiPathMethod : IMethodEntity
                )}\n" +
                $"{Indent(baseIndent)}/// <param name=\"cancellationToken\">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>\n" +
                $"{Indent(baseIndent)}public async {GenerateReturnType()} {GenerateName()}" +
-               $"({string.Join(", ", allParams
-                   .Select(p => p.InMethod)
-               )}, CancellationToken? cancellationToken = null)\n" +
+               $"({string.Join("", allParams
+                   .Select(p => p.InMethod + ", ")
+               )}CancellationToken? cancellationToken = null)\n" +
                $"{Indent(baseIndent)}{{\n" +
                $"{Indent(baseIndent)}    Dictionary<string, string?> query = [];\n" +
                $"{Indent(baseIndent)}    {string.Join("\n" + Indent(baseIndent + 1), queryParams
