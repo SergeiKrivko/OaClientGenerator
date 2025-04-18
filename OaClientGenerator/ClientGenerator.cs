@@ -36,9 +36,19 @@ public class ClientGenerator
         _baseNamespace = baseNamespace ?? $"{_clientName}.Client";
     }
 
-    public static async Task GenerateClientAsync(string inputPath, string outputPath, string clientName, string? baseNamespace)
+    public static async Task GenerateClientAsync(string inputPath, string outputPath, string clientName,
+        string? baseNamespace)
     {
-        var openApiJson = await File.ReadAllTextAsync(inputPath);
+        string openApiJson;
+        if (inputPath.StartsWith("http://") || inputPath.StartsWith("https://"))
+        {
+            var httpClient = new HttpClient();
+            var resp = await httpClient.GetAsync(inputPath);
+            openApiJson = await resp.Content.ReadAsStringAsync();
+        }
+        else
+            openApiJson = await File.ReadAllTextAsync(inputPath);
+
         var openApi = JsonConvert.DeserializeObject<OpenApi>(openApiJson.Replace("\"$ref\"", "\"ref\""));
         if (openApi == null)
             throw new FileNotFoundException("Could not deserialize open API file.");
