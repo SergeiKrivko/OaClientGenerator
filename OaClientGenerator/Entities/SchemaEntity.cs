@@ -33,7 +33,7 @@ public class SchemaEntity(string name, ApiSchema apiSchema) : ICodeEntity
                    $"public class {ClassName}\n" +
                    $"{{\n" +
                    $"    {string.Join("\n    ", apiSchema.Properties
-                       .Select(item => GenerateProperty(item.Key, item.Value, false))
+                       .Select(item => GenerateProperty(item.Key, item.Value, apiSchema.Required.Contains(item.Key)))
                    )}\n" +
                    $"}}";
         }

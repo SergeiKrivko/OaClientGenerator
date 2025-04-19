@@ -24,4 +24,6 @@ public class ApiSchema
     [JsonIgnore] public bool IsArray => Type == "array" && ArrayType != null;
 
     [JsonProperty("default")] public string? Default { get; init; }
+
+    [JsonProperty("required")] public string[] Required { get; init; } = [];
 }
